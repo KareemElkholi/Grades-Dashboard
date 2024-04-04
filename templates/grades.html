@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block body %}
+	<header>
+		<h1>Grades Dashboard</h1>
+		<a href="{{ url_for('logout') }}">Logout</a>
+	</header>
+	<main>
+		<h2>Hi, {{ name }}</h2>
+		<h2>Quick Overview</h2>
+		<section class="overview">
+			<div class="box">
+				<h3>Percentage</h3>
+				<p>{{ "{:.2f}".format(grades["TOTAL"] / max_total * 100) }}%</p>
+			</div>
+			<div class="box">
+				<h3>Ranking</h3>
+				<p>{{ rank }}</p>
+			</div>
+		</section>
+		<h2>Semester Grades</h2>
+		{% for semester, courses in max.items() if grades[semester] > 0 %}
+		<section>
+			<h3>{{ semester }}</h3>
+			<table>
+				<thead>
+					<tr>
+						<th scope="col">Code</th>
+						<th scope="col">Grade</th>
+						<th scope="col">Max</th>
+						<th scope="col">Percent</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% if semester == "TOTAL" %}
+					<tr>
+						<td>{{ semester }}</td>
+						<td>{{ grades["TOTAL"] }}</td>
+						<td>{{ max_total }}</td>
+						<td>{{ "{:.2f}".format(grades["TOTAL"] / max_total * 100) }}%</td>
+					</tr>
+					{% endif %}
+					{% for course, max in courses.items() if grades[course] > 0 %}
+					<tr>
+						<td>{{ course.upper().strip("_") }}</td>
+						<td>{{ grades[course] }}</td>
+						<td>{{ max }}</td>
+						<td>{{ "{:.2f}".format(grades[course] / max * 100) }}%</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</section>
+		{% endfor %}
+	</main>
+	<footer>
+		Made with &lt;3
+	</footer>
+{% endblock %}

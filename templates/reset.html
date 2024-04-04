@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block body %}
+    <div class="form-wrapper">
+        <h1>Reset password</h1>
+        <form name="reset" method="post" novalidate>
+            <div class="form-group">
+                {{ form.csrf_token }}
+            </div>
+            <div class="form-group">
+                {{ form.id.label }}
+                {{ form.id(inputmode="numeric") }}
+            </div>
+            <div class="form-group">
+                {{ form.password.label }}
+                {{ form.password }}
+                <a href="{{ url_for('login') }}">Login?</a>
+            </div>
+            {{ form.reset }}
+        </form>
+        <div class="alert">
+            <ul>
+            {% if form.id.errors %}
+                <li>{{ form.id.errors[0] }}</li>
+            {% endif %}
+            {% if form.password.errors %}
+                <li>{{ form.password.errors[0] }}</li>
+            {% endif %}
+            {% if get_flashed_messages() %}
+                <li>{{ get_flashed_messages()[0] }}</li>
+            {% endif %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}
